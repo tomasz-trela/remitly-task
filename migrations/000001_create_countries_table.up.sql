@@ -1,0 +1,4 @@
+CREATE TABLE countries (
+    iso2 VARCHAR(2) PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
