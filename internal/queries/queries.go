@@ -17,3 +17,10 @@ DO UPDATE SET
   address = EXCLUDED.address,
   country_iso2 = EXCLUDED.country_iso2
 `
+
+const SelectBanksBySwift = `
+SELECT b.swift, b.name AS bank_name, b.address, c.iso2, c.name AS country_name
+FROM banks b
+JOIN countries c ON b.country_iso2 = c.iso2
+WHERE b.swift LIKE $1
+`

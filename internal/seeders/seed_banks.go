@@ -19,4 +19,5 @@ func SeedBanks() {
 			fmt.Println("Error inserting record:", err)
 		}
 	}
+
 }

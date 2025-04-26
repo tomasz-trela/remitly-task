@@ -6,6 +6,7 @@ type SwiftCodeResponse struct {
 	CountryName   string              `json:"countryName"`
 	IsHeadquarter bool                `json:"isHeadquarter"`
 	SwiftCode     string              `json:"swiftCode"`
+	Address       string              `json:"address"`
 	Branches      []SwiftCodeResponse `json:"branches,omitempty"`
 }
 
