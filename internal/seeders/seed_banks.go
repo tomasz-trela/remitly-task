@@ -14,7 +14,7 @@ func SeedBanks() {
 		return
 	}
 	for _, record := range *records {
-		err := repository.CreateSwiftCode(&record)
+		err := repository.UpsertSwiftCode(&record)
 		if err != nil {
 			fmt.Println("Error inserting record:", err)
 		}

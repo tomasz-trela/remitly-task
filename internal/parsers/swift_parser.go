@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/tomasz-trela/remitly-task/config"
 	"github.com/tomasz-trela/remitly-task/internal/models"
@@ -33,12 +34,12 @@ func LoadSwiftRecords() (*[]models.SwiftCode, error) {
 		}
 
 		records = append(records, models.SwiftCode{
-			SwiftCode:   record[1],
-			CodeType:    record[2],
-			BankName:    record[3],
-			CountryISO2: record[0],
-			CountryName: record[6],
-			Address:     record[4],
+			SwiftCode:     record[1],
+			IsHeadquarter: strings.HasSuffix(record[1], "XXX"),
+			BankName:      record[3],
+			CountryISO2:   record[0],
+			CountryName:   record[6],
+			Address:       record[4],
 		})
 	}
 

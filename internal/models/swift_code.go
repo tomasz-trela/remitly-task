@@ -11,10 +11,18 @@ type SwiftCodeResponse struct {
 }
 
 type SwiftCode struct {
-	SwiftCode   string
-	CodeType    string
-	BankName    string
-	CountryISO2 string
-	CountryName string
-	Address     string
+	SwiftCode     string
+	IsHeadquarter bool
+	BankName      string
+	CountryISO2   string
+	CountryName   string
+	Address       string
+}
+
+type CountriesSwiftCodeResponse struct {
+	BankName      string `json:"bankName"`
+	CountryISO2   string `json:"countryISO2"`
+	IsHeadquarter bool   `json:"isHeadquarter"`
+	SwiftCode     string `json:"swiftCode"`
+	Address       string `json:"address"`
 }

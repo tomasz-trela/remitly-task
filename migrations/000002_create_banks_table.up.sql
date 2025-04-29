@@ -1,6 +1,6 @@
 CREATE TABLE banks (
     swift VARCHAR(50) PRIMARY KEY,
-    code VARCHAR(15),
+    is_headquarter BOOLEAN NOT NULL,
     name TEXT NOT NULL,
     address TEXT,
     country_iso2 VARCHAR(2) NOT NULL,
