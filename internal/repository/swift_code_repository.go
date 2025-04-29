@@ -47,6 +47,7 @@ func GetBankCodeAndBranchesBySwift(swiftCode string) (*models.SwiftCodeResponse,
 		&swiftCodeResponse.CountryISO2,
 		&swiftCodeResponse.CountryName,
 	)
+
 	if err != nil {
 		return nil, err
 	}
@@ -62,20 +63,18 @@ func GetBankCodeAndBranchesBySwift(swiftCode string) (*models.SwiftCodeResponse,
 		}
 		defer rows.Close()
 		for rows.Next() {
-			var branch models.SwiftCodeResponse
+			var branch models.CountriesSwiftCodeResponse
 			if err := rows.Scan(
 				&branch.SwiftCode,
 				&branch.BankName,
 				&branch.Address,
 				&branch.IsHeadquarter,
 				&branch.CountryISO2,
-				&branch.CountryName,
 			); err != nil {
 				return nil, err
 			}
 			swiftCodeResponse.Branches = append(swiftCodeResponse.Branches, branch)
 		}
-
 	} else {
 		swiftCodeResponse.IsHeadquarter = false
 	}
@@ -125,39 +124,50 @@ func GetBanksByISO2(iso2 string) (*models.CountryResponse, error) {
 	return &country, nil
 }
 
-func InsertSwiftCode(swiftCode *models.SwiftCode) error {
+func InsertSwiftCode(swiftCode *models.SwiftCode) (int64, error) {
 	_, err := database.DB.Exec(
 		queries.InsertCountryOrDoNothing,
 		swiftCode.CountryISO2,
 		swiftCode.CountryName,
 	)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	_, err = database.DB.Exec(
-		queries.UpsertBank,
+	res, err := database.DB.Exec(
+		queries.InsertSwiftCodeOrDoNothing,
 		swiftCode.SwiftCode,
 		swiftCode.IsHeadquarter,
 		swiftCode.BankName,
 		swiftCode.Address,
 		swiftCode.CountryISO2,
 	)
+
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	rowsAffected, err := res.RowsAffected()
+
+	if err != nil {
+		return 0, err
+	}
+
+	return rowsAffected, nil
 }
 
-func DeleteSwiftCode(swiftCode string) error {
-	_, err := database.DB.Exec(
+func DeleteSwiftCode(swiftCode string) (int64, error) {
+	res, err := database.DB.Exec(
 		queries.DeleteSwiftCode,
 		swiftCode,
 	)
 	if err != nil {
-		return err
+		return 0, err
+	}
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return 0, err
 	}
 
-	return nil
+	return rowsAffected, nil
 }

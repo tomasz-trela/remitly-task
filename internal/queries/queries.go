@@ -45,9 +45,10 @@ VALUES ($1, $2)
 ON CONFLICT (iso2) DO NOTHING;
 `
 
-const InsertSwiftCode = `
+const InsertSwiftCodeOrDoNothing = `
 INSERT INTO banks (swift, is_headquarter, name, address, country_iso2)
 VALUES ($1, $2, $3, $4, $5)
+ON CONFLICT (swift) DO NOTHING
 `
 
 const DeleteSwiftCode = `

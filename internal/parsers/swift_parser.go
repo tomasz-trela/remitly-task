@@ -39,7 +39,7 @@ func LoadSwiftRecords() (*[]models.SwiftCode, error) {
 			BankName:      record[3],
 			CountryISO2:   record[0],
 			CountryName:   record[6],
-			Address:       record[4],
+			Address:       strings.Trim(record[4], " "),
 		})
 	}
 
