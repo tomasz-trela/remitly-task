@@ -70,6 +70,7 @@ func GetBankCodeAndBranchesBySwift(swiftCode string) (*models.SwiftCodeResponse,
 				&branch.Address,
 				&branch.IsHeadquarter,
 				&branch.CountryISO2,
+				new(interface{}),
 			); err != nil {
 				return nil, err
 			}
