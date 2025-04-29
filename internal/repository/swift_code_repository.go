@@ -11,7 +11,7 @@ import (
 
 func UpsertSwiftCode(swiftCode *models.SwiftCode) error {
 	_, err := database.DB.Exec(
-		queries.UpsertCountry,
+		queries.InsertCountryOrDoNothing,
 		swiftCode.CountryISO2,
 		swiftCode.CountryName,
 	)
@@ -20,7 +20,7 @@ func UpsertSwiftCode(swiftCode *models.SwiftCode) error {
 	}
 
 	_, err = database.DB.Exec(
-		queries.UpsertBank,
+		queries.InsertCountryOrDoNothing,
 		swiftCode.SwiftCode,
 		swiftCode.IsHeadquarter,
 		swiftCode.BankName,
