@@ -40,5 +40,20 @@ services:
         condition: service_healthy
     restart: on-failure
 
+  seed:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: remitly-seed
+    volumes:
+    - ./data:/data 
+    env_file:
+      - .env
+    command: ["--seed"]
+    depends_on:
+      - db
+      - migrate
+    restart: "no"
+
 volumes:
   db_data:
