@@ -20,7 +20,7 @@ func UpsertSwiftCode(swiftCode *models.SwiftCode) error {
 	}
 
 	_, err = database.DB.Exec(
-		queries.InsertCountryOrDoNothing,
+		queries.InsertSwiftCodeOrDoNothing,
 		swiftCode.SwiftCode,
 		swiftCode.IsHeadquarter,
 		swiftCode.BankName,
@@ -70,11 +70,14 @@ func GetBankCodeAndBranchesBySwift(swiftCode string) (*models.SwiftCodeResponse,
 				&branch.Address,
 				&branch.IsHeadquarter,
 				&branch.CountryISO2,
-				new(interface{}),
+				new(any),
 			); err != nil {
 				return nil, err
 			}
-			swiftCodeResponse.Branches = append(swiftCodeResponse.Branches, branch)
+
+			if branch.SwiftCode != swiftCode {
+				swiftCodeResponse.Branches = append(swiftCodeResponse.Branches, branch)
+			}
 		}
 	} else {
 		swiftCodeResponse.IsHeadquarter = false
