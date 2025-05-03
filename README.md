@@ -2,8 +2,6 @@
 
 This is a Go-based application that parses, stores, and serves SWIFT code (BIC) data via a REST API. It is designed to transition SWIFT code data from csv format to a fast, queryable web service.
 
----
-
 ## 📘 Overview
 
 SWIFT (BIC) codes uniquely identify bank branches worldwide. This application:
@@ -12,8 +10,6 @@ SWIFT (BIC) codes uniquely identify bank branches worldwide. This application:
 - Identifies and links headquarter vs. branch codes.
 - Stores the processed data in a Postgres database.
 - Provides RESTful endpoints to manage and retrieve SWIFT information.
-
----
 
 ## ⚙️ Setup
 
@@ -28,16 +24,12 @@ cd remitly-task
 docker compose build
 ```
 
----
-
 ## 🚀 Running the Application
 
 ### 1. Run containers
 ```bash
 docker compose up
 ```
-
----
 
 ## 🔗 API Endpoints
 
@@ -79,8 +71,6 @@ docker compose up
 }
 ```
 
----
-
 ## 2. Get All SWIFT Codes by Country
 
 **Endpoint:**  
@@ -113,8 +103,6 @@ Returns all SWIFT codes (both headquarters and branches) for a specified country
 }
 ```
 
----
-
 ## 3. Add a New SWIFT Code
 
 **Endpoint:**  
@@ -141,8 +129,6 @@ Adds a new SWIFT code entry to the database. Can be either a headquarter or a br
   "message": "string"
 }
 ```
-
----
 
 ## 4. Delete a SWIFT Code
 
