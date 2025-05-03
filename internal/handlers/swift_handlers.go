@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/tomasz-trela/remitly-task/internal/models"
@@ -23,7 +24,7 @@ func writeJSONMessage(w http.ResponseWriter, status int, message string) {
 	json.NewEncoder(w).Encode(models.MessageResponse{Message: message})
 }
 
-func GetBankDataBySwift(w http.ResponseWriter, r *http.Request) {
+func GetSwiftDataBySwiftCode(w http.ResponseWriter, r *http.Request) {
 	swiftCode := chi.URLParam(r, "swiftCode")
 
 	swiftCodeResponse, err := repository.GetBankCodeAndBranchesBySwift(swiftCode)
@@ -40,7 +41,7 @@ func GetBankDataBySwift(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(swiftCodeResponse)
 }
 
-func GetBanksDataByCountryISO2(w http.ResponseWriter, r *http.Request) {
+func GetSwiftDataByCountryISO2(w http.ResponseWriter, r *http.Request) {
 	countryISO2 := chi.URLParam(r, "countryISO2code")
 
 	banks, err := repository.GetBanksByISO2(countryISO2)
@@ -57,12 +58,22 @@ func GetBanksDataByCountryISO2(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(banks)
 }
 
-func CreateBank(w http.ResponseWriter, r *http.Request) {
+func PostSwift(w http.ResponseWriter, r *http.Request) {
 	var swiftCode models.SwiftCode
 	err := json.NewDecoder(r.Body).Decode(&swiftCode)
 	if err != nil {
 		writeJSONError(w, http.StatusBadRequest, "Invalid JSON payload")
 		return
+	}
+
+	if len(swiftCode.CountryISO2) != 2 {
+		writeJSONError(w, http.StatusBadRequest, "countryISO2 should have length of 2")
+	}
+
+	swiftCode.CountryISO2 = strings.ToUpper(swiftCode.CountryISO2)
+
+	if len(swiftCode.SwiftCode) != 11 {
+		writeJSONError(w, http.StatusBadRequest, "Swift code should have length of 11")
 	}
 
 	rowsAffected, err := repository.InsertSwiftCode(&swiftCode)
@@ -92,5 +103,5 @@ func DeleteSwiftCode(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	writeJSONMessage(w, http.StatusOK, "Swift code deleted successfully")
 }

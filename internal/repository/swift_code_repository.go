@@ -2,7 +2,6 @@ package repository
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/tomasz-trela/remitly-task/internal/database"
 	"github.com/tomasz-trela/remitly-task/internal/models"
@@ -56,7 +55,7 @@ func GetBankCodeAndBranchesBySwift(swiftCode string) (*models.SwiftCodeResponse,
 		swiftCodeResponse.IsHeadquarter = true
 		rows, err := database.DB.Query(
 			queries.SelectBanksBySwift,
-			strings.TrimSuffix(swiftCode, "XXX")+"%",
+			swiftCode[:8]+"%",
 		)
 		if err != nil {
 			return nil, err

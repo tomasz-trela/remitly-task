@@ -15,9 +15,9 @@ func NewRouter() http.Handler {
 
 	r.Route("/v1", func(v1 chi.Router) {
 		v1.Route("/swift-codes", func(swift chi.Router) {
-			swift.Get("/{swiftCode}", GetBankDataBySwift)
-			swift.Get("/country/{countryISO2code}", GetBanksDataByCountryISO2)
-			swift.Post("/", CreateBank)
+			swift.Get("/{swiftCode}", GetSwiftDataBySwiftCode)
+			swift.Get("/country/{countryISO2code}", GetSwiftDataByCountryISO2)
+			swift.Post("/", PostSwift)
 			swift.Delete("/{swiftCode}", DeleteSwiftCode)
 		})
 	})
