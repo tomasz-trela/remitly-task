@@ -35,6 +35,17 @@ POSTGRES_PASSWORD=<...>
 docker compose build
 ```
 
+## 📋 Running tests
+
+### 1. Run tests
+```bash
+go test ./...
+```
+or if you want to see verbose output
+```bash
+go test ./... -v 
+```
+
 ## 🚀 Running the Application
 
 ### 1. Run containers

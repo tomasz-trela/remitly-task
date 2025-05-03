@@ -7,12 +7,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/tomasz-trela/remitly-task/config"
 	"github.com/tomasz-trela/remitly-task/internal/models"
 )
 
-func LoadSwiftRecords() (*[]models.SwiftCode, error) {
-	file, err := os.Open(config.BanksCsvPath)
+func LoadSwiftRecords(pathTofile string) (*[]models.SwiftCode, error) {
+	file, err := os.Open(pathTofile)
 	if err != nil {
 		fmt.Println("Error opening file:", err)
 		return nil, err
@@ -29,15 +28,20 @@ func LoadSwiftRecords() (*[]models.SwiftCode, error) {
 			break
 		}
 		if err != nil {
-			fmt.Println("Error reading line:", err)
-			return nil, err
+			fmt.Println("Row skipped. Error reading line:", err)
+			continue
+		}
+
+		if len(record[0]) != 2 {
+			fmt.Println("Row skipped wrong ISO2 code")
+			continue
 		}
 
 		records = append(records, models.SwiftCode{
 			SwiftCode:     record[1],
 			IsHeadquarter: strings.HasSuffix(record[1], "XXX"),
 			BankName:      record[3],
-			CountryISO2:   record[0],
+			CountryISO2:   strings.ToUpper(record[0]),
 			CountryName:   record[6],
 			Address:       strings.Trim(record[4], " "),
 		})

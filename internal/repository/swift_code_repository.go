@@ -8,31 +8,6 @@ import (
 	"github.com/tomasz-trela/remitly-task/internal/queries"
 )
 
-func UpsertSwiftCode(swiftCode *models.SwiftCode) error {
-	_, err := database.DB.Exec(
-		queries.InsertCountryOrDoNothing,
-		swiftCode.CountryISO2,
-		swiftCode.CountryName,
-	)
-	if err != nil {
-		return err
-	}
-
-	_, err = database.DB.Exec(
-		queries.InsertSwiftCodeOrDoNothing,
-		swiftCode.SwiftCode,
-		swiftCode.IsHeadquarter,
-		swiftCode.BankName,
-		swiftCode.Address,
-		swiftCode.CountryISO2,
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func GetBankCodeAndBranchesBySwift(swiftCode string) (*models.SwiftCodeResponse, error) {
 	var swiftCodeResponse models.SwiftCodeResponse
 	err := database.DB.QueryRow(
