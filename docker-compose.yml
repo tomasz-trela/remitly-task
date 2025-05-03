@@ -9,20 +9,21 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
   db:
     image: postgres:15
     container_name: remitly-db
     environment:
-      POSTGRES_DB: remitly
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
       timeout: 3s
       retries: 5
@@ -32,7 +33,7 @@ services:
     container_name: remitly-migrate
     volumes:
       - ./migrations:/migrations
-    command: ["-path=/migrations", "-database=postgres://postgres:postgres@db:5432/remitly?sslmode=disable", "up"]
+    command: ["-path=/migrations", "-database=${DATABASE_URL}", "up"]
     depends_on:
       db:
         condition: service_healthy
