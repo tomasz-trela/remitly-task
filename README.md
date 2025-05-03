@@ -24,10 +24,10 @@ cd remitly-task
 Create a `.env` file in the project root with the following content:
 
 ```env
-DATABASE_URL=postgres://postgres:postgres@db:5432/remitly?sslmode=disable
-POSTGRES_DB=remitly
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
+DATABASE_URL=<...>
+POSTGRES_DB=<...>
+POSTGRES_USER=<...>
+POSTGRES_PASSWORD=<...>
 ```
 
 ### 3. Build docker compose app
